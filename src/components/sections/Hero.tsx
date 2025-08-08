@@ -18,7 +18,7 @@ const Hero = () => {
               <Link to="/reporte">Denunciar ahora</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link to="/denuncias">Ver denuncias</Link>
+              <Link to="/categorias">Ver categorías</Link>
             </Button>
           </div>
         </div>

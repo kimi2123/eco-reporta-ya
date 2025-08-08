@@ -11,6 +11,7 @@ import Reporte from "./pages/Reporte";
 import Denuncias from "./pages/Denuncias";
 import DenunciaDetalle from "./pages/DenunciaDetalle";
 import Sobre from "./pages/Sobre";
+import CategoriaDetalle from "./pages/CategoriaDetalle";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/categorias" element={<Categorias />} />
+            <Route path="/categorias/:slug" element={<CategoriaDetalle />} />
             <Route path="/reporte" element={<Reporte />} />
             <Route path="/denuncias" element={<Denuncias />} />
             <Route path="/denuncia/:id" element={<DenunciaDetalle />} />

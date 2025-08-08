@@ -6,9 +6,10 @@ type Props = {
   token?: string;
   value?: { lng: number; lat: number };
   onChange?: (coords: { lng: number; lat: number }) => void;
+  draggable?: boolean;
 };
 
-const Map: React.FC<Props> = ({ token, value, onChange }) => {
+const Map: React.FC<Props> = ({ token, value, onChange, draggable }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
 
@@ -25,14 +26,18 @@ const Map: React.FC<Props> = ({ token, value, onChange }) => {
       pitch: 45,
     });
 
-    const marker = new mapboxgl.Marker({ draggable: true })
-      .setLngLat(value ? [value.lng, value.lat] : [-78.455, -1.831])
-      .addTo(map.current);
+    const isDraggable = draggable ?? true;
 
-    marker.on("dragend", () => {
-      const lngLat = marker.getLngLat();
-      onChange?.({ lng: lngLat.lng, lat: lngLat.lat });
-    });
+    const marker = new mapboxgl.Marker({ draggable: isDraggable })
+      .setLngLat(value ? [value.lng, value.lat] : [-78.455, -1.831])
+      .addTo(map.current!);
+
+    if (isDraggable) {
+      marker.on("dragend", () => {
+        const lngLat = marker.getLngLat();
+        onChange?.({ lng: lngLat.lng, lat: lngLat.lat });
+      });
+    }
 
     map.current.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), "top-right");
 
