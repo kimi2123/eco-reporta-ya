@@ -2,8 +2,10 @@ import { useParams, Link } from "react-router-dom";
 import { Seo } from "@/components/Seo";
 import { loadDenuncias } from "@/store/denuncias";
 import { Card, CardContent } from "@/components/ui/card";
-import { categories, getCategoryBySlug } from "@/utils/categories";
+import { getCategoryBySlug } from "@/utils/categories";
 import { Factory, Flame, Pickaxe, Squirrel } from "lucide-react";
+import { useState } from "react";
+import CategoryFilters, { type CategoryFilterValue } from "@/components/category/CategoryFilters";
 
 const iconBySlug: Record<string, any> = {
   "contaminacion": Factory,
@@ -19,6 +21,12 @@ const CategoriaDetalle = () => {
   const filtered = cat
     ? all.filter((d) => (d.tipo ?? "").toLowerCase() === cat.matchTipo.toLowerCase())
     : [];
+  const [filters, setFilters] = useState<CategoryFilterValue>({});
+  const visible = filtered.filter((d) => {
+    const byCity = !filters.city || (d.ciudad ?? "").toLowerCase() === filters.city.toLowerCase();
+    const byYear = !filters.year || new Date(d.fecha).getFullYear().toString() === filters.year;
+    return byCity && byYear;
+  });
   const Icon = iconBySlug[String(slug)] ?? Factory;
 
   return (
@@ -30,10 +38,12 @@ const CategoriaDetalle = () => {
         <h1 className="text-4xl font-bold">{cat?.title ?? "Categoría"}</h1>
       </div>
 
-      <h2 className="text-2xl font-semibold mb-4">Denuncias</h2>
+      <h2 className="text-2xl font-semibold mb-4">Denuncias ({visible.length})</h2>
+
+      <CategoryFilters data={filtered} value={filters} onChange={setFilters} />
 
       <div className="grid gap-4">
-        {filtered.map((d) => (
+        {visible.map((d) => (
           <Link to={`/denuncia/${d.id}`} key={d.id} className="block">
             <Card className="hover:shadow-elegant transition">
               <CardContent className="p-4">
@@ -44,8 +54,8 @@ const CategoriaDetalle = () => {
             </Card>
           </Link>
         ))}
-        {filtered.length === 0 && (
-          <p className="text-muted-foreground">No hay denuncias registradas para esta categoría aún.</p>
+        {visible.length === 0 && (
+          <p className="text-muted-foreground">No hay denuncias registradas para esta categoría con los filtros actuales.</p>
         )}
       </div>
 
