@@ -2,17 +2,12 @@ import React, { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-type Props = {
-  token?: string;
-  value?: { lng: number; lat: number };
-  onChange?: (coords: { lng: number; lat: number }) => void;
-  draggable?: boolean;
-};
 
-const Map: React.FC<Props> = ({ token, value, onChange, draggable }) => {
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
+const Map = (props) => {
+  const { token, value, onChange, draggable } = props || {};
 
+  const mapContainer = useRef(null);
+  const map = useRef(null);
   useEffect(() => {
     if (!token || !mapContainer.current) return;
 
@@ -30,26 +25,26 @@ const Map: React.FC<Props> = ({ token, value, onChange, draggable }) => {
 
     const marker = new mapboxgl.Marker({ draggable: isDraggable })
       .setLngLat(value ? [value.lng, value.lat] : [-78.455, -1.831])
-      .addTo(map.current!);
+      .addTo(map.current);
 
     if (isDraggable) {
       marker.on("dragend", () => {
         const lngLat = marker.getLngLat();
-        onChange?.({ lng: lngLat.lng, lat: lngLat.lat });
+        onChange && onChange({ lng: lngLat.lng, lat: lngLat.lat });
       });
     }
 
     map.current.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), "top-right");
 
     map.current.on("style.load", () => {
-      map.current?.setFog({
+      map.current && map.current.setFog({
         color: "rgb(255,255,255)",
         "high-color": "rgb(200,200,225)",
         "horizon-blend": 0.2,
       });
     });
 
-    return () => map.current?.remove();
+    return () => map.current && map.current.remove();
   }, [token]);
 
   if (!token) {

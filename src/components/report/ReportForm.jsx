@@ -19,26 +19,26 @@ const ReportForm = () => {
   const [fecha, setFecha] = useState("");
   const [ciudad, setCiudad] = useState("");
   const [mapToken, setMapToken] = useState("");
-  const [coords, setCoords] = useState<{lng:number;lat:number} | undefined>();
-  const [fotos, setFotos] = useState<string[]>([]);
+  const [coords, setCoords] = useState(undefined);
+  const [fotos, setFotos] = useState([]);
 
-  const handleFotos = async (files: FileList | null) => {
+  const handleFotos = async (files) => {
     if (!files) return;
-    const arr: string[] = [];
+    const arr = [];
     for (const f of Array.from(files).slice(0,4)) {
       arr.push(await fToDataUrl(f));
     }
     setFotos(arr);
   };
 
-  const fToDataUrl = (f: File) => new Promise<string>((res, rej) => {
+  const fToDataUrl = (f) => new Promise((res, rej) => {
     const reader = new FileReader();
     reader.onload = () => res(String(reader.result));
     reader.onerror = () => rej();
     reader.readAsDataURL(f);
   });
 
-  const submit = (e: React.FormEvent) => {
+  const submit = (e) => {
     e.preventDefault();
     if (!tipo || !descripcion || !fecha) {
       toast({ title: "Faltan campos", description: "Completa tipo, descripción y fecha." });
