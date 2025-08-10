@@ -46,8 +46,7 @@ const CategoryFilters: React.FC<Props> = ({ data, value, onChange }) => {
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Todas" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">Todas</SelectItem>
+            <SelectContent className="z-50">
               {cities.map((c) => (
                 <SelectItem key={c} value={c}>{c}</SelectItem>
               ))}
@@ -64,8 +63,7 @@ const CategoryFilters: React.FC<Props> = ({ data, value, onChange }) => {
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Todos" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">Todos</SelectItem>
+            <SelectContent className="z-50">
               {years.map((y) => (
                 <SelectItem key={y} value={y}>{y}</SelectItem>
               ))}
