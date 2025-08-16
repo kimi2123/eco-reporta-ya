@@ -1,12 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-type SeoProps = {
-  title: string;
-  description?: string;
-  canonical?: string;
-};
-
-export const Seo = ({ title, description, canonical }: SeoProps) => {
+export const Seo = ({ title, description, canonical }) => {
   const metaDescription = description ?? "EcoAlerta: plataforma para reportar denuncias ambientales con ubicación, fotos y filtros por ciudad y año.";
   const canonicalUrl = canonical ?? window.location.href;
   return (

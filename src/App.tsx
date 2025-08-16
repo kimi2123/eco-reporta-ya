@@ -10,7 +10,7 @@ import Categorias from "./pages/Categorias";
 import Reporte from "./pages/Reporte";
 import Denuncias from "./pages/Denuncias";
 import DenunciaDetalle from "./pages/DenunciaDetalle";
-import Sobre from "./pages/Sobre";
+import Sobre from "./pages/Sobre.jsx";
 import CategoriaDetalle from "./pages/CategoriaDetalle";
 import NotFound from "./pages/NotFound";
 
